@@ -1,0 +1,79 @@
+ometa OmetaHighlighterJs <: Parser {
+    fromTo :x :y = seq(x):s (~seq(y) char)*:c seq(y):e -> [s, c.join(''), e],
+
+    nameFirst = letter | '$' | '_',
+    nameRest = nameFirst | digit,
+    name = firstAndRest(`nameFirst, `nameRest):r -> [`name, r.join('')],
+
+    builtin = ( ``Array'' | ``Boolean'' | ``Date''
+              | ``Error'' | ``Function'' | ``Math''
+              | ``netscape'' | ``Number'' | ``Object''
+              | ``Packages'' | ``RegExp'' | ``String''
+              | ``sun'' | ``decodeURI''
+              | ``decodeURIComponent'' | ``encodeURI''
+              | ``encodeURIComponent'' | ``Error''
+              | ``eval'' | ``isFinite'' | ``isNaN''
+              | ``parseFloat'' | ``parseInt''
+              | ``document'' | ``this'' | ``window''):c -> ['name.builtin', c],
+
+
+    declaration = (``var'' | ``with'' | ``function''):c -> ['keyword.declaration', c],
+    reserved = ( ``abstract'' | ``boolean'' | ``byte''
+               | ``char'' | ``class'' | ``const''
+               | ``debugger'' | ``double'' | ``enum''
+               | ``export'' | ``extends'' | ``final''
+               | ``float'' | ``goto'' | ``implements''
+               | ``import'' | ``int'' | ``interface''
+               | ``long'' | ``native'' | ``package''
+               | ``private'' | ``protected''
+               | ``public'' | ``short'' | ``static''
+               | ``super'' | ``synchronized''
+               | ``throws'' | ``transient'' | ``volatile''):c -> ['keyword.reserved', c],
+    constant = ( ``true'' | ``false'' | ``null''
+               | ``NaN'' | ``Infinity'' | ``undefined''):c -> ['keyword.constant', c],
+
+    keyword = declaration | reserved | constant |
+              ( ``for'' | ``in'' | ``while'' | ``do'' | ``break''
+              | ``return'' | ``continue'' | ``switch'' | ``case''
+              | ``default'' | ``if'' | ``else'' | ``throw''
+              | ``try'' | ``catch'' | ``finally'' | ``new''
+              | ``delete'' | ``typeof''
+              | ``instanceof'' | ``void'' | ``this''):c -> [`keyword, c],
+
+
+    escapeChar = '\\':e char:c -> ['string.escape', [e, c]],
+    nonEscapeChar :q = ~seq(q) char,
+    quote :q = seq(q):c -> [`punctuation, c],
+    anyString :q :n = quote(q):qp
+                      (escapeChar | nonEscapeChar(q))*:cs
+                      quote(q) -> { cs.unshift(qp); cs.push(qp); [`string + '.' + n, cs] },
+
+    string = anyString('\'', `single)
+             | anyString('"', `double)
+             | (anyString('/', `regex):r (`g | `i | `m)*:f -> { r[1] = r[1].concat(f); r }),
+
+
+    integer = digit+:c -> ['number.integer', c],
+    float = digit*:ws '.' digit*:fs ?(ws.length + fs.length != 0) -> ['number.float', ws.concat([[`punctuation, '.']]).concat(fs)],
+    hex = '0' 'x' (digit | `a | `b | `c | `d | `e | `f)*:c -> ['number.hex', ['0'].concat([[`punctuation, 'x']]).concat(c)],
+    number = float | hex | integer,
+
+    comment = (seq('//'):p (~'\n' char)*:c) -> ['comment.single', [p].concat(c)]
+              | fromTo('/*', '*/'):b -> ['comment.multiline', b],
+
+
+    operator = ( '?'    | ':'     | ``!=='' | ``!=''  | ``==='' | ``=='' | ``=''  | ``>=''
+               | '>'    | ``<=''  | '<'     | ``++''  | ``+=''  | '+'    | ``--'' | ``-=''
+               | '-'    | ``*=''  | '*'     | ``/=''  | '/'     | ``%='' | '%'    | ``&&=''
+               | ``&&'' | ``||='' | ``||''  | '.'     | '!'                                ):c -> [`operator, [c]],
+
+    punctuation = ( '(' | ')' | '{' | '}' | '[' | ']' | ',' | ';' ):c -> [`punctuation, [c]],
+
+    nonText = (keyword | name | string | number | comment | operator | punctuation),
+    topLevel = (nonText | char)*
+}
+
+ometa OmetaHighlighter <: Parser {
+    js = char*:c -> [`js, OmetaHighlighterJs.matchAll(c.join(''), 'topLevel')],
+    javascript = js
+}

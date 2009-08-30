@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <script src="lib.js"></script>
+        <script src="ometa-base.js"></script>
+        <script src="parser.js"></script>
+        <script src="bs-js-compiler.js"></script>
+        <script src="bs-ometa-compiler.js"></script>
+        <script src="bs-ometa-optimizer.js"></script>
+        <script src="bs-ometa-js-compiler.js"></script>
+        <script src="ometa-highlighter.js"></script>
+        <script src="ometa-highlighter2html.js"></script>
+
+        <script>
+            window._OmetaHighlighterToHtml = function(code, lang) {
+                var json = OmetaHighlighter.matchAll(code, lang);
+                //console.log(json);
+                return OmetaHighlighterToHtml.match(
+                    json,
+                    'topLevel'
+                );
+            }
+        </script>
+    </head>
+    <body></body>
+</html>
