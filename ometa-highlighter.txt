@@ -58,8 +58,8 @@ ometa OmetaHighlighterJs <: Parser {
     hex = '0' 'x' (digit | `a | `b | `c | `d | `e | `f)*:c -> ['number.hex', ['0'].concat([[`punctuation, 'x']]).concat(c)],
     number = float | hex | integer,
 
-    comment = (seq('//'):p (~'\n' char)*:c) -> ['comment.single', [p].concat(c)]
-              | fromTo('/*', '*/'):b -> ['comment.multiline', b],
+    comment = (seq('//'):p (~'\n' char)*:c) -> ['comment.single', [[`punctuation, p]].concat(c)]
+              | fromTo('/*', '*/'):b -> ['comment.multiline', [[`punctuation, b[0]]].concat(b[1]).concat([[`punctuation, b[2]]])],
 
 
     operator = ( '?'    | ':'     | ``!=='' | ``!=''  | ``==='' | ``=='' | ``=''  | ``>=''
@@ -69,7 +69,7 @@ ometa OmetaHighlighterJs <: Parser {
 
     punctuation = ( '(' | ')' | '{' | '}' | '[' | ']' | ',' | ';' ):c -> [`punctuation, [c]],
 
-    nonText = (keyword | name | string | number | comment | operator | punctuation),
+    nonText = (keyword:c ~nameRest) -> c | name | comment | string | number | operator | punctuation,
     topLevel = (nonText | char)*
 }
 
