@@ -58,7 +58,7 @@ ometa OmetaHighlighterJs <: Parser {
     hex = '0' 'x' (digit | `a | `b | `c | `d | `e | `f)*:c -> ['number.hex', ['0'].concat([[`punctuation, 'x']]).concat(c)],
     number = float | hex | integer,
 
-    comment = (seq('//'):p (~'\n' char)*:c) -> ['comment.single', [[`punctuation, p]].concat(c)]
+    comment = (``//'':p (~'\n' char)*:c) -> ['comment.single', [[`punctuation, p]].concat(c)]
               | fromTo('/*', '*/'):b -> ['comment.multiline', [[`punctuation, b[0]]].concat(b[1]).concat([[`punctuation, b[2]]])],
 
 
@@ -73,7 +73,41 @@ ometa OmetaHighlighterJs <: Parser {
     topLevel = (nonText | char)*
 }
 
+ometa OmetaHighlighterXml <: Parser {
+    fromTo :x :y = seq(x):s (~seq(y) char)*:c seq(y):e -> [s, c.join(''), e],
+
+    nameFirst = letter | ':' | '_',
+    nameRest = nameFirst | digit | '-' | '.',
+    name = firstAndRest(`nameFirst, `nameRest):r -> [`name, r.join('')],
+
+    quote :q = seq(q):c -> [`punctuation, c],
+    anyString :q :n = quote(q):qp
+                      (~seq(q) char)*:cs
+                      quote(q) -> { cs.unshift(qp); cs.push(qp); [`string + '.' + n, cs] },
+
+    preproc = (fromTo('<?', '?>') | fromTo('<![CDATA[', ']]>') | fromTo('<![CDATA[', ']]>')):c
+              -> ['comment.preproc', [[`punctuation, c[0]]].concat(c[1]).concat([[`punctuation, c[2]]])],
+
+    string = anyString('\'', `single)
+             | anyString('"', `double),
+
+    attr = name:n spaces:s1 '=':p spaces:s2 string:s -> ['name.attribute', [n[1]].concat(s1).concat([[`punctuation, p]]).concat(s2).concat([s])],
+
+    tag = '<':p1 spaces:s1 name:n
+              (spaces:s2 attr:a spaces:s3 -> s2.concat([a]).concat(s3))*:as -> Array.concat.apply([], as):as
+              spaces:s4 ('>' | ``/>''):p2
+              -> ['name.tag', [[`punctuation, p1]].concat(s1).concat(n[1]).concat(as).concat(s4).concat([[`punctuation, p2]])]
+          | '<':p1 spaces:s1 '/':p2 name:n spaces:s2 '>':p3 -> ['name.tag', [[`punctuation, p1 + p2]].concat(s1).concat(n[1]).concat(s2).concat([[`punctuation, p3]])],
+
+    entity = '&':p1 name:n ';':p2 -> ['name.entity', [[`punctuation, p1]].concat(n[1]).concat([[`punctuation, p2]])],
+    comment = fromTo('<!--', '-->'):c -> ['comment', [[`punctuation, c[0]]].concat(c[1]).concat([[`punctuation, c[2]]])],
+
+    nonText = comment | preproc | entity | tag,
+    topLevel = (nonText | char)*
+}
+
 ometa OmetaHighlighter <: Parser {
     js = char*:c -> [`js, OmetaHighlighterJs.matchAll(c.join(''), 'topLevel')],
-    javascript = js
+    javascript = js,
+    xml = char*:c -> [`xml, OmetaHighlighterXml.matchAll(c.join(''), 'topLevel')]
 }

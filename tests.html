@@ -54,6 +54,7 @@
         <select class="lang-select" name="lang">
             <option value="" selected="selected"></option>
             <option value="js">javascript</option>
+            <option value="xml">xml</option>
         </select>
         <div style="display: none;">
             <textarea id="js">
@@ -71,6 +72,13 @@ function testFuntion(obj) {
     var a = ['1'].concat([2]);
     return res;
 }</textarea>
+            <textarea id="xml">
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="pagename.xsl"?>
+<page name="pagename" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <xi:include href="subpagename.xml"/>
+</page>
+</textarea>
         </div>
     </form>
     <div id="res"></div>
