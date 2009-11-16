@@ -1,8 +1,8 @@
 
-all: ometa-highlighter.js ometa-highlighter2html.js
+all: $(patsubst %.ometajs,%.ometajs.js,$(wildcard *.ometajs))
 
-ometa-highlighter.js: ometa-highlighter.txt
-	./translate.js -o ometa-highlighter.js ometa-highlighter.txt
+%.ometajs.js: %.ometajs
+	./ometa-js/translate.js -o $@ $?
 
-ometa-highlighter2html.js: ometa-highlighter2html.txt
-	./translate.js -o ometa-highlighter2html.js ometa-highlighter2html.txt
+test:
+	v8cgi tests.js
