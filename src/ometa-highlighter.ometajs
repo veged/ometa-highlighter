@@ -94,7 +94,7 @@ ometa OmetaHighlighterXml <: Parser {
     attr = name:n spaces:s1 '=':p spaces:s2 string:s -> ['name.attribute', [n[1]].concat(s1).concat([[`punctuation, p]]).concat(s2).concat([s])],
 
     tag = '<':p1 spaces:s1 name:n
-              (spaces:s2 attr:a spaces:s3 -> s2.concat([a]).concat(s3))*:as -> Array.prototype.concat.apply([], as):as
+              ((spaces:s2 attr:a spaces:s3 -> s2.concat([a]).concat(s3))*:as -> Array.prototype.concat.apply([], as)):as
               spaces:s4 ('>' | ``/>''):p2
               -> ['name.tag', [[`punctuation, p1]].concat(s1).concat(n[1]).concat(as).concat(s4).concat([[`punctuation, p2]])]
           | '<':p1 spaces:s1 '/':p2 name:n spaces:s2 '>':p3 -> ['name.tag', [[`punctuation, p1 + p2]].concat(s1).concat(n[1]).concat(s2).concat([[`punctuation, p3]])],

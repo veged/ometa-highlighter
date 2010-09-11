@@ -1,0 +1,5 @@
+<pre class="ohl ohl-js"><code><span class="ohl-keyword ohl-keyword-declaration">function</span><span class="ohl-punctuation">(</span><span class="ohl-name">a</span><span class="ohl-punctuation">)</span> <span class="ohl-punctuation">{</span>
+    <span class="ohl-keyword ohl-keyword-declaration">var</span> <span class="ohl-name">b</span> <span class="ohl-operator">=</span> <span class="ohl-name">a</span> <span class="ohl-operator">+</span> <span class="ohl-string ohl-string-single"><span class="ohl-punctuation">&apos;</span>c<span class="ohl-punctuation">&apos;</span></span><span class="ohl-punctuation">;</span>
+    <span class="ohl-keyword">return</span> <span class="ohl-name">b</span><span class="ohl-punctuation">;</span>
+<span class="ohl-punctuation">}</span>
+</code></pre>
