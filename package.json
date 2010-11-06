@@ -2,7 +2,7 @@
     "name" : "ometa-highlighter",
     "description" : "Code highlighter based on Ometa/JS (little inspired by Pygments)",
     "version" : "0.1.1",
-    "homepage": "http://github.com/veged/ometa-highlighter.git",
+    "homepage": "http://github.com/veged/ometa-highlighter",
     "author" : "Sergey Berezhnoy <veged@mail.ru> (http://github.com/veged)",
     "repository" : {
         "type" : "git",
@@ -13,6 +13,6 @@
     "dependencies" : {
         "ometajs" : ">= 2.0.1"
     },
-    "engines" : { "node" : ">=0.2" },
+    "engines" : { "node" : ">=0.2.0" },
     "licenses" : [ { "type" : "AS IS" } ]
 }
