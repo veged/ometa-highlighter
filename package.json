@@ -1,13 +1,14 @@
 {
     "name" : "ometa-highlighter",
     "description" : "Code highlighter based on Ometa/JS (little inspired by Pygments)",
-    "version" : "0.1.3",
+    "version" : "0.1.4",
     "homepage": "http://github.com/veged/ometa-highlighter",
     "author" : "Sergey Berezhnoy <veged@mail.ru> (http://github.com/veged)",
     "repository" : {
         "type" : "git",
         "url" : "http://github.com/veged/ometa-highlighter.git"
     },
+    "main" : "./lib/ometa-highlighter",
     "directories" : { "lib" : "./lib" },
     "bin" : { "ohl2html" : "./bin/ohl2html" },
     "dependencies" : {
