@@ -1,4 +1,4 @@
-ometa OmetaHighlighterJs <: Parser {
+ometa OmetaHighlighterJs {
     fromTo :x :y = seq(x):s (~seq(y) char)*:c seq(y):e -> [s, c.join(''), e],
 
     nameFirst = letter | '$' | '_',
@@ -73,7 +73,7 @@ ometa OmetaHighlighterJs <: Parser {
     topLevel = (nonText | char)*
 }
 
-ometa OmetaHighlighterXml <: Parser {
+ometa OmetaHighlighterXml {
     fromTo :x :y = seq(x):s (~seq(y) char)*:c seq(y):e -> [s, c.join(''), e],
 
     nameFirst = letter | ':' | '_',
@@ -106,7 +106,7 @@ ometa OmetaHighlighterXml <: Parser {
     topLevel = (nonText | char)*
 }
 
-ometa OmetaHighlighter <: Parser {
+ometa OmetaHighlighter {
     js = char*:c -> [`js, OmetaHighlighterJs.matchAll(c.join(''), 'topLevel')],
     javascript = js,
     xml = char*:c -> [`xml, OmetaHighlighterXml.matchAll(c.join(''), 'topLevel')]

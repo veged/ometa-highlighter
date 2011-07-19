@@ -19,7 +19,7 @@ lib/ometa-highlighter.js: src
 		; done
 
 tests: FORCE
-	ohl2html -i $@/bla.js -o $@/bla.html
-	cat $@/bla.js | ohl2html > $@/bla.html.stdout
+	./bin/ohl2html -i $@/bla.js -o $@/bla.html
+	cat $@/bla.js | ./bin/ohl2html > $@/bla.html.stdout
 
 .PHONY: all FORCE
