@@ -21,7 +21,7 @@ OmetaHighlighterToHtml._escape = (function(){
             .replace(apos, '&apos;')
             .replace(quot, '&quot;');
     }
-})()
+})();
 
 OmetaHighlighterToHtml._makeClass = (function(){
     var type2class = {};
@@ -41,4 +41,4 @@ OmetaHighlighterToHtml._makeClass = (function(){
         }
         return typeClass.slice(1);
     }
-})()
+})();
