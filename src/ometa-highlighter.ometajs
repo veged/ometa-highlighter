@@ -85,7 +85,7 @@ ometa OmetaHighlighterXml {
                       (~seq(q) char)*:cs
                       quote(q) -> { cs.unshift(qp); cs.push(qp); [`string + '.' + n, cs] },
 
-    preproc = (fromTo('<?', '?>') | fromTo('<![CDATA[', ']]>') | fromTo('<![CDATA[', ']]>')):c
+    preproc = (fromTo('<?', '?>') | fromTo('<![CDATA[', ']]>')):c
               -> ['comment.preproc', [[`punctuation, c[0]]].concat(c[1]).concat([[`punctuation, c[2]]])],
 
     string = anyString('\'', `single)
