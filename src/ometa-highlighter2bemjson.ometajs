@@ -1,0 +1,45 @@
+ometa OmetaHighlighterToBemjson {
+    token = char+:c -> OmetaHighlighterToBemjson._escape(c.join(''))
+            | [:t ?(t.length > 1) tokens:c] -> { tag: 'span', attrs: { 'class': OmetaHighlighterToBemjson._makeClass(t) }, content: c }
+            | :c -> OmetaHighlighterToBemjson._escape(c),
+    tokens = [token*:c] -> c,
+
+    topLevel = [:lang tokens:c] -> { block: 'b-code', mods: { 'lang': lang }, content: c }
+}
+
+OmetaHighlighterToBemjson._escape = (function(){
+    var amp = new RegExp('&', 'g'),
+        lt = new RegExp('<', 'g'),
+        gt = new RegExp('>', 'g'),
+        apos = new RegExp("'", 'g'),
+        quot = new RegExp('"', 'g');
+
+    return function(s) {
+        return String(s)
+            .replace(amp, '&amp;')
+            .replace(lt, '&lt;')
+            .replace(gt, '&gt;')
+            .replace(apos, '&apos;')
+            .replace(quot, '&quot;');
+    }
+})();
+
+OmetaHighlighterToBemjson._makeClass = (function(){
+    var type2class = {};
+
+    return function(type) {
+        var types = [],
+            typeParts = type.split('.');
+        while (typeParts.length) {
+            types.unshift(typeParts.join('-'));
+            typeParts.pop();
+        }
+
+        var typeClass = '';
+        while (types.length) {
+            var t = types.shift();
+            typeClass += ' ohl-' + (type2class.hasOwnProperty(t) ? type2class[t] : t);
+        }
+        return typeClass.slice(1);
+    }
+})();

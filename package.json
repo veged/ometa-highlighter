@@ -10,7 +10,7 @@
     },
     "main" : "./lib/ometa-highlighter",
     "directories" : { "lib" : "./lib" },
-    "bin" : { "ohl2html" : "./bin/ohl2html" },
+    "bin" : { "ohl2html" : "./bin/ohl2html", "ohl2bemjson" : "./bin/ohl2bemjson" },
     "dependencies" : {
         "ometajs" : ">= 2.0.1"
     },
