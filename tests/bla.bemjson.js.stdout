@@ -1,5 +1,5 @@
 {
-    "block": "b-code",
+    "block": "ohl",
     "mods": {
         "lang": "js"
     },

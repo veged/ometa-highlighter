@@ -4,7 +4,7 @@ ometa OmetaHighlighterToBemjson {
             | :c -> OmetaHighlighterToBemjson._escape(c),
     tokens = [token*:c] -> c,
 
-    topLevel = [:lang tokens:c] -> { block: 'b-code', mods: { 'lang': lang }, content: c }
+    topLevel = [:lang tokens:c] -> { block: 'ohl', mods: { 'lang': lang }, content: c }
 }
 
 OmetaHighlighterToBemjson._escape = (function(){

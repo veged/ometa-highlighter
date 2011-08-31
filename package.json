@@ -10,10 +10,10 @@
     },
     "main" : "./lib/ometa-highlighter",
     "directories" : { "lib" : "./lib" },
-    "bin" : { "ohl2html" : "./bin/ohl2html", "ohl2bemjson" : "./bin/ohl2bemjson" },
+    "bin" : { "ohl" : "./bin/ohl" },
     "dependencies" : {
         "ometajs" : ">= 2.0.1"
     },
-    "engines" : { "node" : ">=0.2.0" },
+    "engines" : { "node" : ">=0.4.0" },
     "licenses" : [ { "type" : "AS IS" } ]
 }

@@ -20,16 +20,16 @@ lib/ometa-highlighter.js: src
 		; done
 
 tests: FORCE
-	./bin/ohl2html -i $@/bla.js -o $@/bla.html -f js
-	cat $@/bla.js | ./bin/ohl2html -f js > $@/bla.html.stdout
-	
-	./bin/ohl2html -i $@/test.xml -o $@/test.html -f xml
-	cat $@/test.xml | ./bin/ohl2html -f xml > $@/test.html.stdout
-	
-	./bin/ohl2bemjson -i $@/bla.js -o $@/bla.bemjson.js -f js
-	cat $@/bla.js | ./bin/ohl2bemjson -f js > $@/bla.bemjson.js.stdout
-	
-	./bin/ohl2bemjson -i $@/test.xml -o $@/test.bemjson.js -f xml
-	cat $@/test.xml | ./bin/ohl2bemjson -f xml > $@/test.bemjson.js.stdout
+	./bin/ohl -i $@/bla.js -o $@/bla.html -l js -f html
+	cat $@/bla.js | ./bin/ohl -l js -f html > $@/bla.html.stdout
+
+	./bin/ohl -i $@/test.xml -o $@/test.html -l xml -f html
+	cat $@/test.xml | ./bin/ohl -l xml -f html > $@/test.html.stdout
+
+	./bin/ohl -i $@/bla.js -o $@/bla.bemjson.js -l js -f bemjson
+	cat $@/bla.js | ./bin/ohl -l js -f bemjson > $@/bla.bemjson.js.stdout
+
+	./bin/ohl -i $@/test.xml -o $@/test.bemjson.js -l xml -f bemjson
+	cat $@/test.xml | ./bin/ohl -l xml -f bemjson > $@/test.bemjson.js.stdout
 
 .PHONY: all FORCE
