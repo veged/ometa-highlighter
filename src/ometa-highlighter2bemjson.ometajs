@@ -1,12 +1,13 @@
-ometa OmetaHighlighterToHtml {
-    token = [:t ?(t.length > 1) tokens:c] -> ('<span class="' + OmetaHighlighterToHtml._makeClass(t) + '">' + c + '</span>')
-            | :c -> OmetaHighlighterToHtml._escape(c),
-    tokens = [token*:c] -> c.join(''),
+ometa OmetaHighlighterToBemjson {
+    token = char+:c -> OmetaHighlighterToBemjson._escape(c.join(''))
+            | [:t ?(t.length > 1) tokens:c] -> { tag: 'span', attrs: { 'class': OmetaHighlighterToBemjson._makeClass(t) }, content: c }
+            | :c -> OmetaHighlighterToBemjson._escape(c),
+    tokens = [token*:c] -> c,
 
-    topLevel = [:lang tokens:c] -> ('<pre class="ohl ohl-' + lang + '"><code>' + c + '</code></pre>')
+    topLevel = [:lang tokens:c] -> { block: 'ohl', mods: { 'lang': lang }, content: c }
 }
 
-OmetaHighlighterToHtml._escape = (function(){
+OmetaHighlighterToBemjson._escape = (function(){
     var amp = new RegExp('&', 'g'),
         lt = new RegExp('<', 'g'),
         gt = new RegExp('>', 'g'),
@@ -23,7 +24,7 @@ OmetaHighlighterToHtml._escape = (function(){
     }
 })();
 
-OmetaHighlighterToHtml._makeClass = (function(){
+OmetaHighlighterToBemjson._makeClass = (function(){
     var type2class = {};
 
     return function(type) {

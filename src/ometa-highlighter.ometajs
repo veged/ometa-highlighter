@@ -41,6 +41,7 @@ ometa OmetaHighlighterJs {
               | ``instanceof'' | ``void'' | ``this''):c -> [`keyword, c],
 
 
+    // TODO: unicode char, octal char
     escapeChar = '\\':e char:c -> ['string.escape', [e, c]],
     nonEscapeChar :q = ~seq(q) char,
     quote :q = seq(q):c -> [`punctuation, c],
@@ -48,11 +49,14 @@ ometa OmetaHighlighterJs {
                       (escapeChar | nonEscapeChar(q))*:cs
                       quote(q) -> { cs.unshift(qp); cs.push(qp); [`string + '.' + n, cs] },
 
+    // TODO: modifiers (ff y or any)
+    // https://developer.mozilla.org/en/JavaScript/Guide/Regular_Expressions#Advanced_Searching_With_Flags
     string = anyString('\'', `single)
              | anyString('"', `double)
              | (anyString('/', `regex):r (`g | `i | `m)*:f -> { r[1] = r[1].concat(f); r }),
 
 
+    // TODO: exponent
     integer = digit+:c -> ['number.integer', c],
     float = digit*:ws '.' digit*:fs ?(ws.length + fs.length != 0) -> ['number.float', ws.concat([[`punctuation, '.']]).concat(fs)],
     hex = '0' 'x' (digit | `a | `b | `c | `d | `e | `f)*:c -> ['number.hex', ['0'].concat([[`punctuation, 'x']]).concat(c)],
@@ -85,7 +89,7 @@ ometa OmetaHighlighterXml {
                       (~seq(q) char)*:cs
                       quote(q) -> { cs.unshift(qp); cs.push(qp); [`string + '.' + n, cs] },
 
-    preproc = (fromTo('<?', '?>') | fromTo('<![CDATA[', ']]>') | fromTo('<![CDATA[', ']]>')):c
+    preproc = (fromTo('<?', '?>') | fromTo('<![CDATA[', ']]>')):c
               -> ['comment.preproc', [[`punctuation, c[0]]].concat(c[1]).concat([[`punctuation, c[2]]])],
 
     string = anyString('\'', `single)

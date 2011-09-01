@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <grass type="nice"/>
+
+    <tree>
+        <leaf id="1"/>
+        <branch>
+            <leaf id="2"/>
+            <leaf id="3"/>
+        </branch>
+    </tree>
+</root>
