@@ -12,7 +12,8 @@
     "directories" : { "lib" : "./lib" },
     "bin" : { "ohl" : "./bin/ohl" },
     "dependencies" : {
-        "ometajs" : ">= 2.0.1"
+        "ometajs" : ">= 2.0.1",
+        "coa" : ">= 0.0.5"
     },
     "engines" : { "node" : ">=0.4.0" },
     "licenses" : [ { "type" : "AS IS" } ]
